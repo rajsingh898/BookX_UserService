@@ -1,6 +1,7 @@
 package com.book.UserService.service;
 
 import com.book.UserService.DTO.*;
+import com.book.UserService.Exceptions.NotFoundException;
 import com.book.UserService.entity.User;
 import com.book.UserService.repository.UserRepository;
 
@@ -26,7 +27,7 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = (String) authentication.getPrincipal();
         User u1 = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
         UserInfoDTO userInfo = new UserInfoDTO();
         userInfo.setEmail(u1.getEmail());
         userInfo.setFullName(u1.getFullName());
