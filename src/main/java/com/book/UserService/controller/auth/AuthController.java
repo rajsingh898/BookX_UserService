@@ -23,4 +23,9 @@ public class AuthController {
     public LoginResponseDTO login(@Valid @RequestBody LoginRequestDTO rrd){
     return authService.login(rrd);
     }
+
+    @PostMapping("/logout")
+    public void logout() {
+
+    }
 }

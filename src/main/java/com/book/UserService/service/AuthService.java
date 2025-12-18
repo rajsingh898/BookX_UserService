@@ -1,6 +1,8 @@
 package com.book.UserService.service;
 
 import com.book.UserService.DTO.*;
+import com.book.UserService.Exceptions.BadRequestException;
+import com.book.UserService.Exceptions.UnauthorizedException;
 import com.book.UserService.entity.User;
 import com.book.UserService.repository.UserRepository;
 import com.book.UserService.security.JwtUtil;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 
 @Service
@@ -28,7 +29,7 @@ public class AuthService {
 
     public RegisterResponseDTO register(RegisterRequestDTO rrd) {
         if (userRepository.existsByEmail(rrd.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new BadRequestException("Email already exists");
         }
         User user = new User();
         user.setEmail(rrd.getEmail());
@@ -50,7 +51,7 @@ public class AuthService {
 
         User user = userRepository.findByEmail(rrd.getEmail()).orElseThrow(() -> new RuntimeException("Invalid email or password"));
         if (!passwordEncoder.matches(rrd.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new UnauthorizedException("Invalid email or password");
         }
 
         String token = jwtUtil.generateToken(user);
