@@ -49,7 +49,7 @@ public class AuthService {
 
     public LoginResponseDTO login(@Valid LoginRequestDTO rrd) {
 
-        User user = userRepository.findByEmail(rrd.getEmail()).orElseThrow(() -> new RuntimeException("Invalid email or password"));
+        User user = userRepository.findByEmail(rrd.getEmail()).orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
         if (!passwordEncoder.matches(rrd.getPassword(), user.getPassword())) {
             throw new UnauthorizedException("Invalid email or password");
         }
