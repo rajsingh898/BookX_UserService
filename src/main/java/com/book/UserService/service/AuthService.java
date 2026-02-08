@@ -29,7 +29,7 @@ public class AuthService {
 
     public RegisterResponseDTO register(RegisterRequestDTO rrd) {
         if (userRepository.existsByEmail(rrd.getEmail())) {
-            throw new BadRequestException("Email already exists");
+            throw new BadRequestException("User already exists with this email.");
         }
         User user = new User();
         user.setEmail(rrd.getEmail());
