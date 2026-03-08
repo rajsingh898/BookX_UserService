@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -34,5 +37,12 @@ public class UserService {
         userInfo.setRole(u1.getRole());
         userInfo.setIsActive(u1.getIsActive());
         return userInfo;
+    }
+
+    public HashMap<String,String> exchangedUserName(UUID exchangedUserId) {
+        User u = userRepository.findById(exchangedUserId).orElseThrow(() -> new NotFoundException("User not found"));
+        HashMap<String,String> idAndEmail = new HashMap<>();
+        idAndEmail.put(u.getEmail(), u.getFullName());
+        return idAndEmail;
     }
 }
